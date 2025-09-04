@@ -1,0 +1,39 @@
+!pip install --force-reinstall --no-cache-dir numpy==1.22.4 pandas==1.3.5
+
+!pip install google-search-results
+
+from serpapi import GoogleSearch
+import pandas as pd
+
+api_key= "api_key"
+
+params={
+    "engine":"google",
+    "q":"environmental costs of ai",
+    "google_domain":"google.com",
+    "tbm":"isch",
+    "num":20,
+    "tbs": "cdr:1,cd_min:01/01/2008,cd_max:07/23/2025",
+    #"tbs": "qdr:y" - for past year
+    # "hl": "zh-cn",     # language (fr = French)
+    #"gl": "CN",     # country (FR = France)
+    "api_key":api_key
+}
+
+search= GoogleSearch(params)
+results=search.get_dict()
+images=results.get("images_results",[])
+
+data=[]
+for i,img in enumerate(images):
+    data.append({
+        "Rank":i+1,
+        "Image Title":img.get("title"),
+        "Image URL":img.get("original"),
+        "Source Page":img.get("source"),
+        "Thumbnail URL":img.get("thumbnail")
+    })
+    
+df=pd.DataFrame(data)
+
+df.head(20)
