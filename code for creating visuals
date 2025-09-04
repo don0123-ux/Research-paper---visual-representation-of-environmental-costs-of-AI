@@ -1,0 +1,12 @@
+library(ggplot2)
+
+# Create contingency table
+heat_data <- as.data.frame(table(df$Source.type, df$Image.type..infographic..stock.photo...))
+
+# Plot heatmap
+ggplot(heat_data, aes(x = Var1, y = Var2, fill = Freq)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  labs(x = "Source Type", y = "Image Type", fill = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
